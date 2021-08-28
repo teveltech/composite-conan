@@ -1,0 +1,37 @@
+name: 'Conan composite action'
+description: 'A composite action to handle building a Conan package'
+
+inputs:
+  new_tag:
+    required: true
+    description: 'The new tag to push'
+  package-file:
+    required: true
+    description: 'Path to conanfile.py'
+    default: './'
+  arch:
+    required: true
+    description: 'The package arch'
+    default: x86_64
+    
+runs:
+    using: "composite"
+    steps:
+          
+      - name: Override version in conanfile.py
+        uses: teveltech/version-action@master
+        with:
+          new_version: ${{ inputs.new_tag }}
+          file_path: ${{ inputs.package-file }}
+          
+      - name: Link conan config directory to github home /github/home
+        shell: bash
+        run: rm -rf $HOME/.conan && ln -s /root/.conan $HOME
+      
+      - name: Create conan package
+        shell: bash
+        run: source /opt/ros/melodic/setup.bash && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
+        
+      - name: Upload conan packages
+        shell: bash
+        run: conan upload "*" -c -r tevel-conan --all

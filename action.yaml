@@ -13,7 +13,10 @@ inputs:
     required: true
     description: 'The package arch'
     default: x86_64
-    
+outputs:
+  package:
+    description: 'The new package name and version'
+    value: ${{ steps.echo_name.outputs.package_name }}
 runs:
     using: "composite"
     steps:
@@ -35,3 +38,11 @@ runs:
       - name: Upload conan packages
         shell: bash
         run: conan upload "*" -c -r tevel-conan --all
+        
+      - name: Echo package name
+        id: echo_name
+        shell: bash
+        run: |
+          echo \"$(tac ./conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
+          echo "::set-output name=package_name:: \
+          $(echo \"$(tac ./conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"

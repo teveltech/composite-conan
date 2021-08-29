@@ -43,6 +43,6 @@ runs:
         id: echo_name
         shell: bash
         run: |
-          echo \"$(tac ./conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
+          echo \"$(tac ${{ inputs.package-file }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
           echo "::set-output name=package_name:: \
-          $(echo \"$(tac ./conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"
+          $(echo \"$(tac ${{ inputs.package-file }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"

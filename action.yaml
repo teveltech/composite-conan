@@ -2,10 +2,10 @@ name: 'Conan composite action'
 description: 'A composite action to handle building a Conan package'
 
 inputs:
-  new_tag:
+  new-tag:
     required: true
     description: 'The new tag to push'
-  package-file:
+  package-folder:
     required: true
     description: 'Path to conanfile.py'
     default: './'
@@ -13,10 +13,12 @@ inputs:
     required: true
     description: 'The package arch'
     default: x86_64
+    
 outputs:
   package:
     description: 'The new package name and version'
-    value: ${{ steps.echo_name.outputs.package_name }}
+    value: ${{ steps.echo_name.outputs.package-name }}
+    
 runs:
     using: "composite"
     steps:
@@ -24,8 +26,8 @@ runs:
       - name: Override version in conanfile.py
         uses: teveltech/version-action@master
         with:
-          new_version: ${{ inputs.new_tag }}
-          file_path: ${{ inputs.package-file }}
+          new_version: ${{ inputs.new-tag }}
+          file_path: ${{ inputs.package-folder }}
           
       - name: Link conan config directory to github home /github/home
         shell: bash
@@ -43,6 +45,6 @@ runs:
         id: echo_name
         shell: bash
         run: |
-          echo \"$(tac ${{ inputs.package-file }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
-          echo "::set-output name=package_name:: \
-          $(echo \"$(tac ${{ inputs.package-file }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"
+          echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
+          echo "::set-output name=package-name:: \
+          $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"

@@ -35,15 +35,18 @@ runs:
       
       - name: Create conan package
         shell: bash
+        working-directory: ${{ inputs.package-folder }}
         run: source /opt/ros/melodic/setup.bash && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
         
       - name: Upload conan packages
         shell: bash
+        working-directory: ${{ inputs.package-folder }}
         run: conan upload "*" -c -r tevel-conan --all
         
       - name: Echo package name
         id: echo_name
         shell: bash
+        working-directory: ${{ inputs.package-folder }}
         run: |
           echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
           echo "::set-output name=package-name:: \

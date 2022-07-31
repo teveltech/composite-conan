@@ -36,7 +36,7 @@ runs:
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}
-        run: source /opt/ros/melodic/setup.bash && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
+        run: source /opt/ros/melodic/setup.bash && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan -c tools.system.package_manager:mode=install
         
       - name: Upload conan packages
         shell: bash

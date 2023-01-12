@@ -36,7 +36,7 @@ runs:
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}
-        run: if [[ -n $ROS_DISTRO ]]; then source /opt/ros/noetic/setup.bash; fi && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
+        run: if [[ -n $ROS_DISTRO ]]; then source /opt/ros/$ROS_DISTRO/setup.bash; fi && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
         
       - name: Upload conan packages
         shell: bash

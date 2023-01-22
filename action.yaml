@@ -32,7 +32,10 @@ runs:
       - name: Link conan config directory to github home /github/home
         shell: bash
         run: rm -rf $HOME/.conan && ln -s /root/.conan $HOME
-      
+      - name: remove and create conan profile
+        run: rm -rf /root/.conan/profiles/default && conan profile new default --detect && conan profile update settings.compiler.libcxx=libstdc++11 default
+      - name: Upgrade conan and cmake
+        run: pip3 install --upgrade conan cmake
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}

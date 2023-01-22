@@ -33,8 +33,10 @@ runs:
         shell: bash
         run: rm -rf $HOME/.conan && ln -s /root/.conan $HOME
       - name: remove and create conan profile
+        shell: bash
         run: rm -rf /root/.conan/profiles/default && conan profile new default --detect && conan profile update settings.compiler.libcxx=libstdc++11 default
       - name: Upgrade conan and cmake
+        shell: bash
         run: pip3 install --upgrade conan cmake
       - name: Create conan package
         shell: bash

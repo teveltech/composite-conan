@@ -12,7 +12,7 @@ inputs:
   arch:
     required: true
     description: 'The package arch'
-    default: x86_64
+    default: armv8
     
 outputs:
   package:

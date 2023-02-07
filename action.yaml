@@ -48,5 +48,5 @@ runs:
         shell: bash
         run: |
           echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
-          echo "::set-output name=package-name:: \
-          $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"
+          echo "package-name= \
+          $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")" >> $GITHUB_OUTPUT

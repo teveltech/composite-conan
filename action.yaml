@@ -56,4 +56,4 @@ runs:
         shell: bash
         run: |
           echo '### Conan package:' >> $GITHUB_STEP_SUMMARY
-          echo `${{ steps.echo_name.outputs.package-name }}` >> $GITHUB_STEP_SUMMARY
+          echo '`${{ steps.echo_name.outputs.package-name }}`' >> $GITHUB_STEP_SUMMARY

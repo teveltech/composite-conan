@@ -52,6 +52,8 @@ runs:
           $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")" >> $GITHUB_OUTPUT
 
       - name: Add to summary
+        id: summary
+        shell: bash!
         run: |
           echo '### Conan package:' >> $GITHUB_STEP_SUMMARY
           echo `${{ steps.echo_name.outputs.package-name }}` >> $GITHUB_STEP_SUMMARY

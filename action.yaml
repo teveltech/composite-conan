@@ -36,7 +36,7 @@ runs:
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}
-        run: source /opt/ros/melodic/setup.bash && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
+        run: if [[ -n $ROS_DISTRO ]]; then source /opt/ros/$ROS_DISTRO/setup.bash; fi && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
         
       - name: Upload conan packages
         shell: bash
@@ -48,5 +48,14 @@ runs:
         shell: bash
         run: |
           echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\"
-          echo "::set-output name=package-name:: \
-          $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")"
+          echo "package-name= \
+          $(echo \"$(tac ${{ inputs.package-folder }}conanfile.py | grep -e 'name =' -e '__version__ =' | awk -F"[\"\"]" '{printf $2"/"}' | cut -d "/" -f 1,2)\")" >> $GITHUB_OUTPUT
+
+      - name: Add to summary
+        id: summary
+        shell: bash
+        run: |
+          echo '##### Conan package:' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.echo_name.outputs.package-name }}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

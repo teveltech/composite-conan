@@ -36,7 +36,7 @@ runs:
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}
-        run: if [[ -n $ROS_DISTRO ]]; then source /opt/ros/$ROS_DISTRO/setup.bash; fi && export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/include/python3.11 && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} --build missing -r tevel-conan
+        run: if [[ -n $ROS_DISTRO ]]; then source /opt/ros/$ROS_DISTRO/setup.bash; fi && export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/include/python3.11 && conan create . _/_ -s arch=${{ inputs.arch }} -s arch_build=${{ inputs.arch }} -r tevel-conan
         
       - name: Upload conan packages
         shell: bash

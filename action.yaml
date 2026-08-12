@@ -13,6 +13,8 @@ inputs:
     required: true
     description: 'The package arch'
     default: x86_64
+  reg:
+    required: true
     
 outputs:
   package:
@@ -36,7 +38,7 @@ runs:
         shell: bash
         run: |
           conan user --clean
-          conan remote add tevel-conan ${{ secrets.CONAN_REGISTRY }} false
+          conan remote add tevel-conan ${{ inputs.reg }} false
           conan user kuku -r tevel-conan -p kukulero 
           conan user
       - name: Create conan package

@@ -32,7 +32,13 @@ runs:
       - name: Link conan config directory to github home /github/home
         shell: bash
         run: rm -rf $HOME/.conan && ln -s /root/.conan $HOME
-      
+      - name: user
+        shell: bash
+        run: |
+          conan user --clean
+          conan remote add tevel-conan *** false
+          conan user kuku -r tevel-conan -p kukulero 
+          conan user
       - name: Create conan package
         shell: bash
         working-directory: ${{ inputs.package-folder }}

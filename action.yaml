@@ -36,7 +36,7 @@ runs:
         shell: bash
         run: |
           conan user --clean
-          conan remote add tevel-conan *** false
+          conan remote add tevel-conan ${{ secrets.CONAN_REGISTRY } false
           conan user kuku -r tevel-conan -p kukulero 
           conan user
       - name: Create conan package

@@ -28,7 +28,7 @@ runs:
     steps:
           
       - name: Override version in conanfile.py
-        uses: teveltech/version-action@master
+        uses: teveltech/version-action@samever
         with:
           new_version: ${{ inputs.new-tag }}
           file_path: ${{ inputs.package-folder }}
